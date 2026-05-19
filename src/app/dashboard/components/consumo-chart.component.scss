@@ -1,0 +1,19 @@
+.chart-wrapper {
+  background: var(--gov-white);
+  border-radius: var(--gov-radius-md);
+  padding: var(--gov-space-6);
+  box-shadow: var(--gov-shadow-sm);
+}
+
+.chart__title {
+  margin: 0 0 var(--gov-space-4) 0;
+  font-family: var(--gov-font);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gov-black);
+}
+
+.chart__container {
+  height: 320px;
+  position: relative;
+}

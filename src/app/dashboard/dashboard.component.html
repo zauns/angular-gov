@@ -1,0 +1,15 @@
+<div class="dashboard">
+  @if (loading()) {
+    <div class="dashboard__loading">Carregando...</div>
+  } @else {
+    <section class="dashboard__kpis">
+      @for (kpi of kpis(); track kpi.titulo) {
+        <app-kpi-card [titulo]="kpi.titulo" [valor]="kpi.valor" [cor]="kpi.cor" />
+      }
+    </section>
+
+    <section class="dashboard__chart">
+      <app-consumo-chart [data]="consumoPorUf()" />
+    </section>
+  }
+</div>
