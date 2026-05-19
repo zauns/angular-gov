@@ -26,10 +26,10 @@ Ver [docs/adr/0001-facade-architecture.md](docs/adr/0001-facade-architecture.md)
 ### Escopo obrigatório
 
 - **Layout Gov.br**: Header com logo do Governo Federal, menu de navegação (Dashboard / Consulta), breadcrumbs data-driven (Home > Combustíveis > Página Atual), skip-link de acessibilidade.
-- **Dashboard** (`/dashboard`): 3 cards de KPI (Preço Médio Gasolina, Preço Médio Diesel, Total de Litros Consumidos) + gráfico de barras de Consumo por UF.
+- **Dashboard** (`/dashboard`): 4 cards de KPI (Preço Médio Gasolina, Preço Médio Etanol, Preço Médio Diesel, Total de Litros Consumidos) + gráfico de barras de Consumo por UF.
 - **Consulta** (`/consulta`): Tabela paginada (Data, Posto, Cidade/UF, Tipo, Valor/Litro, Total Pago), filtro por UF, navegação anterior/próximo.
 - **Facade**: `dashboard.facade.ts`, `consulta.facade.ts`, `detalhe.facade.ts` — componentes nunca importam `HttpClient`.
-- **Mock de dados**: 54 registros cobrindo todos os 27 estados brasileiros e os 3 tipos de combustível (Gasolina, Etanol, Diesel).
+- **Mock de dados**: 121 registros cobrindo todos os 27 estados brasileiros e os 3 tipos de combustível (Gasolina, Etanol, Diesel).
 
 ### Bônus
 
