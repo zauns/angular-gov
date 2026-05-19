@@ -1,0 +1,53 @@
+<div class="detalhe">
+  <a routerLink="/consulta" class="detalhe__back">
+    &larr; Voltar para Consulta
+  </a>
+
+  @if (facade.loading()) {
+    <p class="detalhe__status">Carregando...</p>
+  } @else if (facade.error()) {
+    <p class="detalhe__status detalhe__status--error">{{ facade.error() }}</p>
+  } @else if (facade.registro(); as r) {
+    <h2 class="detalhe__title">Registro #{{ r.id }}</h2>
+
+    <div class="detalhe__card">
+      <section class="detalhe__section">
+        <h3 class="detalhe__section-title">Abastecimento</h3>
+        <dl class="detalhe__dl">
+          <dt>Data</dt>
+          <dd>{{ r.data }}</dd>
+          <dt>Posto</dt>
+          <dd>{{ r.posto }}</dd>
+          <dt>Cidade/UF</dt>
+          <dd>{{ r.cidade }}/{{ r.uf }}</dd>
+          <dt>Tipo de Combustível</dt>
+          <dd>{{ r.tipo }}</dd>
+          <dt>Valor por Litro</dt>
+          <dd>R$ {{ r.valorLitro.toFixed(2) }}</dd>
+          <dt>Litros</dt>
+          <dd>{{ r.litros.toLocaleString('pt-BR') }} L</dd>
+          <dt>Total Pago</dt>
+          <dd>R$ {{ r.totalPago.toFixed(2) }}</dd>
+        </dl>
+      </section>
+
+      <section class="detalhe__section">
+        <h3 class="detalhe__section-title">Motorista</h3>
+        <dl class="detalhe__dl">
+          <dt>Nome</dt>
+          <dd>{{ r.motorista }}</dd>
+          <dt>CPF</dt>
+          <dd>{{ r.cpfMotorista | cpfMask }}</dd>
+        </dl>
+      </section>
+
+      <section class="detalhe__section">
+        <h3 class="detalhe__section-title">Veículo</h3>
+        <dl class="detalhe__dl">
+          <dt>Placa</dt>
+          <dd>{{ r.veiculo }}</dd>
+        </dl>
+      </section>
+    </div>
+  }
+</div>
