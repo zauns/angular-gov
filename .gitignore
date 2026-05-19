@@ -1,6 +1,8 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-.docs
+# Claude
+.claude/.mcp.json
+.claude/settings.local.json
 
 # Compiled output
 /dist

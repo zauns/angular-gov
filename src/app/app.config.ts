@@ -1,11 +1,17 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { routes } from './app.routes';
+import { InMemoryDataService } from './core/services/in-memory-data.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
+    provideRouter(routes, withComponentInputBinding()),
+    provideHttpClient(withInterceptorsFromDi()),
+    importProvidersFrom(
+      HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { delay: 200 })
+    )
   ]
 };
