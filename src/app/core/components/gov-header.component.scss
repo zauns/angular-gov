@@ -1,0 +1,119 @@
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 8px;
+  background: var(--gov-white);
+  color: var(--gov-primary);
+  padding: 8px 16px;
+  z-index: 1000;
+  font-family: var(--gov-font);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 0 0 4px 4px;
+
+  &:focus {
+    top: 0;
+  }
+}
+
+.gov-header {
+  background-color: var(--gov-white);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.16);
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 8px 16px;
+    min-height: 63px;
+    gap: var(--gov-space-4);
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  &__logo {
+    height: 28px;
+    width: auto;
+  }
+
+  &__titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    flex: 1;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--gov-font);
+    font-size: 24px;
+    font-weight: 400;
+    color: #000;
+    line-height: 1.15;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-family: var(--gov-font);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gov-gray-700);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  &__accessibility {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 24px;
+  }
+
+  &__a11y-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    color: #1351b4;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+      background-color: rgba(19, 81, 180, 0.08);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--gov-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &__login {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 16px 7px 16px;
+    border-radius: 42px;
+    border: none;
+    background-color: #fcfcfc;
+    color: var(--gov-primary);
+    font-family: var(--gov-font);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: default;
+  }
+}

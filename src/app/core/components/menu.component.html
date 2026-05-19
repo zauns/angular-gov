@@ -1,0 +1,15 @@
+<nav class="menu" aria-label="Navegação principal">
+  <ul class="menu__list">
+    @for (item of items; track item.route) {
+      <li class="menu__item">
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="menu__link--active"
+          class="menu__link"
+        >
+          {{ item.label }}
+        </a>
+      </li>
+    }
+  </ul>
+</nav>

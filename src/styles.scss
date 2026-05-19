@@ -1,1 +1,85 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+  // Gov.br Design Tokens
+  --gov-primary: #1351B4;
+  --gov-primary-dark: #0C3D8A;
+  --gov-primary-light: #2670E8;
+
+  --gov-white: #FFFFFF;
+  --gov-gray-100: #F8F8F8;
+  --gov-gray-200: #EDEDED;
+  --gov-gray-400: #CCCCCC;
+  --gov-gray-500: #888888;
+  --gov-gray-700: #555555;
+  --gov-black: #000000;
+
+  --gov-success: #168821;
+  --gov-warning: #FFCD07;
+  --gov-danger: #E52207;
+  --gov-info: #155BCB;
+
+  // Typography
+  --gov-font: 'Montserrat', 'Rawline', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  // Spacing (4px base)
+  --gov-space-1: 4px;
+  --gov-space-2: 8px;
+  --gov-space-3: 12px;
+  --gov-space-4: 16px;
+  --gov-space-5: 20px;
+  --gov-space-6: 24px;
+  --gov-space-8: 32px;
+  --gov-space-10: 40px;
+  --gov-space-12: 48px;
+
+  // Shadows
+  --gov-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --gov-shadow-md: 0 1px 6px rgba(0, 0, 0, 0.16);
+  --gov-shadow-lg: 0 2px 12px rgba(0, 0, 0, 0.12);
+
+  // Border Radius
+  --gov-radius-sm: 4px;
+  --gov-radius-md: 8px;
+  --gov-radius-lg: 16px;
+  --gov-radius-pill: 42px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--gov-font);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--gov-black);
+  background-color: var(--gov-gray-100);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--gov-primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &[aria-disabled="true"] {
+    cursor: default;
+    opacity: 0.8;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+#main-content:focus {
+  outline: none;
+}

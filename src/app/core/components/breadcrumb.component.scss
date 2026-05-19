@@ -1,0 +1,67 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-height: 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--gov-space-4);
+
+  &__list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 15px;
+      height: 12px;
+      margin: 0 4px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M4.5 2L8.5 6l-4 4' stroke='%23cccccc' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") center no-repeat;
+    }
+
+    &:first-child::before {
+      display: none;
+    }
+  }
+
+  &__link {
+    font-family: var(--gov-font);
+    font-size: 11.67px;
+    font-weight: 500;
+    color: var(--gov-primary);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--gov-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &__nolink {
+    font-family: var(--gov-font);
+    font-size: 11.67px;
+    font-weight: 500;
+    color: var(--gov-gray-500);
+  }
+
+  &__current {
+    font-family: var(--gov-font);
+    font-size: 11.67px;
+    font-weight: 500;
+    color: #333333;
+  }
+}
