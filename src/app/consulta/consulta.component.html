@@ -1,0 +1,83 @@
+<div class="consulta">
+  <div class="consulta__toolbar">
+    <label class="consulta__filtro-label" for="filtro-uf">Filtrar por UF:</label>
+    <select
+      id="filtro-uf"
+      class="consulta__filtro"
+      [ngModel]="facade.ufSelecionada()"
+      (ngModelChange)="facade.filtrarPorUf($event)"
+    >
+      <option value="">Todas as UFs</option>
+      @for (uf of facade.ufs; track uf) {
+        <option [value]="uf">{{ uf }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="consulta__table-wrapper">
+    <table class="consulta__table">
+      <colgroup>
+        <col style="width: 12%" />
+        <col style="width: 25%" />
+        <col style="width: 20%" />
+        <col style="width: 10%" />
+        <col style="width: 12%" />
+        <col style="width: 12%" />
+        <col style="width: 9%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Posto</th>
+          <th>Cidade/UF</th>
+          <th>Tipo</th>
+          <th>Valor/Litro</th>
+          <th>Total Pago</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of facade.items(); track item.id) {
+          <tr>
+            <td data-label="Data">{{ item.data }}</td>
+            <td data-label="Posto">{{ item.posto }}</td>
+            <td data-label="Cidade/UF">{{ item.cidade }}/{{ item.uf }}</td>
+            <td data-label="Tipo">{{ item.tipo }}</td>
+            <td data-label="Valor/Litro">R$ {{ item.valorLitro.toFixed(2) }}</td>
+            <td data-label="Total Pago">R$ {{ item.totalPago.toFixed(2) }}</td>
+            <td>
+              <a [routerLink]="['/consulta', item.id]" class="consulta__detail-link">
+                Detalhes
+              </a>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="consulta__empty">Nenhum registro encontrado.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="consulta__pagination">
+    <button
+      class="consulta__page-btn"
+      [disabled]="facade.pagina() <= 1"
+      (click)="facade.anterior()"
+    >
+      Anterior
+    </button>
+    <span class="consulta__page-info">
+      Página {{ facade.pagina() }} de {{ facade.totalPaginas() }}
+      ({{ facade.total() }} registros)
+    </span>
+    <button
+      class="consulta__page-btn"
+      [disabled]="facade.pagina() >= facade.totalPaginas()"
+      (click)="facade.proximo()"
+    >
+      Próximo
+    </button>
+  </div>
+</div>
