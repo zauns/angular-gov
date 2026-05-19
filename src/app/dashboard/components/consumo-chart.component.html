@@ -1,6 +1,11 @@
 <div class="chart-wrapper">
   <h3 class="chart__title">Consumo por UF</h3>
   <div class="chart__container">
-    <canvas #canvas></canvas>
+    <canvas
+      baseChart
+      type="bar"
+      [data]="chartData()"
+      [options]="chartOptions"
+    ></canvas>
   </div>
 </div>
