@@ -1,0 +1,51 @@
+Desafio Técnico frontend - V-LAB
+Contexto
+O setor de transportes precisa de um mini-painel gerencial para visualizar dados de consumo e
+preço de combustíveis da frota nacional. A interface deve seguir o Padrão Digital de Governo
+(Gov.br).
+Como o prazo é reduzido (3h), o escopo original de 7 dias foi enxugado para focar no que mais
+importa: estrutura, fidelidade visual ao DSGOV, componentização e arquitetura Facade.
+Stack Obrigatória
+• Framework: Angular 16+
+• Linguagem: TypeScript
+• Estilização: SCSS ou Tailwind CSS
+• Mock de API: JSON Server ou In-Memory Web API (à escolha)
+• Design System: Reproduzir visualmente o Gov.br (cor primária #1351B4, fontes
+Rawline/Montserrat ou similares)
+Escopo Mínimo (Obrigatório)
+1. Layout Gov.br
+• Barra de Governo no topo (faixa com logo "Governo Federal" e links de acessibilidade —
+podem ser não-funcionais).
+• Header da aplicação com título "Painel de Combustíveis — Frota Nacional".
+• Menu com dois itens: Dashboard e Consulta.
+• Breadcrumbs: Home > Combustíveis > Dashboard (e equivalente na rota de
+consulta).
+2. Dashboard (/dashboard)
+• 3 Cards de KPI: Preço Médio Nacional (Gasolina), Preço Médio Nacional (Diesel), Total
+de Litros Consumidos.
+• 1 Gráfico: Consumo por UF (barras) — biblioteca de livre escolha (ngx-charts, Chart.js,
+ECharts, etc).
+3. Consulta (/consulta)
+• Tabela com colunas: Data, Posto, Cidade/UF, Tipo de Combustível, Valor/Litro, Total Pago.
+• 1 filtro funcional à escolha: por UF ou por Tipo de Combustível.
+• Paginação (anterior/próximo basta).
+4. Arquitetura Facade (obrigatório)
+• Cada feature (dashboard, consulta) deve ter um *.facade.ts que abstrai o
+HttpClient/serviço de dados dos componentes.
+• Os componentes consomem apenas o Facade (via observables ou signals).
+5. Mock de Dados
+• Mínimo de 30 registros de abastecimento cobrindo pelo menos 5 UFs e os 3 tipos de
+combustível (Gasolina, Etanol, Diesel).
+Escopo Opcional (Bônus)
+Implemente uma (não mais que isso, por favor):
+• Tela de Detalhe do Registro (/consulta/:id) com dados de Motorista (CPF mascarado)
+e Veículo.
+• Segundo gráfico no Dashboard (Evolução de Preço — linha temporal).
+• Toggle de Alto Contraste funcional.
+• Rota 404 customizada.
+Entrega
+• Repositório público no GitHub com:
+• README.md contendo: como rodar, decisões arquiteturais, o que ficou pronto, o que
+ficou de fora.
+• Histórico de commits incremental (não um único commit initial commit no
+final — queremos ver o processo).

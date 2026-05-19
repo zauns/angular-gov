@@ -1,59 +1,44 @@
-# AngularGov
+# Painel de Combustíveis — Frota Nacional
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.11.
+Mini-painel gerencial para visualização de dados de consumo e preço de combustíveis da frota nacional, seguindo o Padrão Digital de Governo (Gov.br).
 
-## Development server
-
-To start a local development server, run:
+## Como rodar
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Acessar `http://localhost:4200/`. O mock de API roda em memória (In-Memory Web API) — não requer processo separado.
 
-## Code scaffolding
+## Decisões arquiteturais
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Ver [docs/adr/0001-facade-architecture.md](docs/adr/0001-facade-architecture.md) para detalhes completos.
 
-```bash
-ng generate component component-name
-```
+- **Mock API**: `angular-in-memory-web-api` — roda dentro do interceptor HTTP do Angular, sem processo separado. Suporta paginação e filtros nativamente.
+- **Facade pattern**: Cada feature (dashboard, consulta, detalhe) tem seu `*.facade.ts` que abstrai o acesso a dados. Componentes consomem apenas signals expostos pelo Facade. RxJS internamente, `toSignal()` na fronteira.
+- **Estrutura**: Pastas planas por feature — `core/`, `dashboard/`, `consulta/`, `shared/`, `models/`. Lazy-loading via `loadComponent`.
+- **Visual**: Montserrat (similar à Rawline), tokens CSS customizados (cor primária `#1351B4`), SCSS, Chart.js + ng2-charts para gráficos.
+- **Estado**: Signals para estado local, `computed()` para estado derivado, `OnPush` em todos os componentes.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## O que ficou pronto
 
-```bash
-ng generate --help
-```
+### Escopo obrigatório
 
-## Building
+- **Layout Gov.br**: Header com logo do Governo Federal, menu de navegação (Dashboard / Consulta), breadcrumbs data-driven (Home > Combustíveis > Página Atual), skip-link de acessibilidade.
+- **Dashboard** (`/dashboard`): 3 cards de KPI (Preço Médio Gasolina, Preço Médio Diesel, Total de Litros Consumidos) + gráfico de barras de Consumo por UF.
+- **Consulta** (`/consulta`): Tabela paginada (Data, Posto, Cidade/UF, Tipo, Valor/Litro, Total Pago), filtro por UF, navegação anterior/próximo.
+- **Facade**: `dashboard.facade.ts`, `consulta.facade.ts`, `detalhe.facade.ts` — componentes nunca importam `HttpClient`.
+- **Mock de dados**: 54 registros cobrindo todos os 27 estados brasileiros e os 3 tipos de combustível (Gasolina, Etanol, Diesel).
 
-To build the project run:
+### Bônus
 
-```bash
-ng build
-```
+- **Tela de Detalhe** (`/consulta/:id`): Exibe dados completos do abastecimento, motorista com CPF mascarado (`xxx.xxx.000-00`) e veículo.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## O que ficou de fora
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Toggle de Alto Contraste**: Os botões de acessibilidade (alto contraste, VLibras, fonte) estão presentes no header mas não são funcionais — conforme permitido pelo escopo.
+- **Segundo gráfico** (Evolução de Preço — linha temporal): Não implementado; escopo bônus limitado a um item.
+- **Rota 404 customizada**: Rotas inexistentes redirecionam para `/dashboard`.
+- **Testes automatizados**: Não implementados no escopo de 3h.
+- **Menu responsivo**: O menu é horizontal fixo; não há menu colapsável para mobile.
