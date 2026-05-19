@@ -1,6 +1,6 @@
 # ADR 0001 — Facade Architecture with In-Memory Mock API
 
-**Status:** Accepted  
+**Status:** Accepted (Amended 2026-05-19)  
 **Date:** 2026-05-18
 
 ## Context
@@ -52,3 +52,25 @@ Each feature is a self-contained folder with its own Facade. `loadComponent` laz
 - Each feature's data contract is explicit in its Facade's public signals
 - Tests (if added later) can mock the Facade, not HttpClient
 - The In-Memory API provides realistic pagination/filtering query parameters
+
+## Amendment (2026-05-19) — BaseFacade consolidation
+
+The three facades diverged: `DashboardFacade` followed this ADR (RxJS + `toSignal`), while `ConsultaFacade` and `DetalheFacade` used imperative `http.get().subscribe()` with pure signals. To restore consistency, a `BaseFacade` was extracted into `core/` providing:
+
+- `http` and `api` injection
+- `loading` (public readonly `Signal`, backed by a protected writable `_loading` for facades that manage it manually)
+- `error` (writable signal)
+
+All three facades now extend `BaseFacade` and follow the same reactive pattern:
+
+| Facade | Reactive pattern |
+|---|---|
+| `DashboardFacade` | `combineLatest` over 4 shared observables, `loading` derived from emission |
+| `ConsultaFacade` | `BehaviorSubject`s for `uf$` / `pagina$`, `combineLatest` derivation, `defer` for eager fetch |
+| `DetalheFacade` | `BehaviorSubject<number>` + `switchMap` for on-demand fetch by ID |
+
+**Consequences:**
+- Facades share a single `loading`/`error` contract — components switch between facades consistently
+- `shareReplay(1)` on shared source observables prevents duplicate HTTP calls
+- Each facade owns its `catchError` fallback type (`of([])` for lists, `of(null)` for singletons)
+- The `_loading` / `loading` split lets `DashboardFacade` override with a derived signal while `ConsultaFacade` and `DetalheFacade` manage it imperatively via `finalize`

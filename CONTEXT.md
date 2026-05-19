@@ -14,8 +14,9 @@
 
 ## KPIs do Dashboard
 
-- **Preço Médio Nacional (Gasolina)** — Média aritmética do Valor/Litro para todos os abastecimentos do tipo Gasolina.
-- **Preço Médio Nacional (Diesel)** — Média aritmética do Valor/Litro para todos os abastecimentos do tipo Diesel.
+- **Preço Médio Gasolina** — Média aritmética do Valor/Litro para todos os abastecimentos do tipo Gasolina.
+- **Preço Médio Etanol** — Média aritmética do Valor/Litro para todos os abastecimentos do tipo Etanol.
+- **Preço Médio Diesel** — Média aritmética do Valor/Litro para todos os abastecimentos do tipo Diesel.
 - **Total de Litros Consumidos** — Soma de todos os litros abastecidos, independente de UF ou tipo.
 
 ## Gráfico
