@@ -1,75 +1,68 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, combineLatest, map, shareReplay, catchError, finalize, defer, of } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Abastecimento, Uf } from '../models/abastecimento';
+import { BaseFacade } from '../core/base.facade';
 
 @Injectable({ providedIn: 'root' })
-export class ConsultaFacade {
-  private readonly http = inject(HttpClient);
-  private readonly api = 'api/abastecimentos';
-
-  readonly ufSelecionada = signal<Uf | ''>('');
-  readonly pagina = signal(1);
+export class ConsultaFacade extends BaseFacade {
+  readonly ufs: Uf[] = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
   readonly limite = 10;
 
-  readonly items = signal<Abastecimento[]>([]);
-  readonly total = signal(0);
-  readonly totalPaginas = signal(1);
+  private readonly uf$ = new BehaviorSubject<Uf | ''>('');
+  private readonly pagina$ = new BehaviorSubject(1);
 
-  readonly ufs: Uf[] = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
+  private readonly todos$ = defer(() => {
+    this._loading.set(true);
+    return this.http.get<Abastecimento[]>(this.api);
+  }).pipe(
+    catchError(() => { this.error.set('Erro ao carregar dados.'); return of([]); }),
+    finalize(() => this._loading.set(false)),
+    shareReplay(1)
+  );
 
-  readonly loading = signal(false);
-  readonly error = signal<string | null>(null);
-  private todosOsRegistros: Abastecimento[] = [];
+  private readonly filtrados$ = combineLatest([this.todos$, this.uf$]).pipe(
+    map(([todos, uf]) => uf ? todos.filter(r => r.uf === uf) : todos),
+    shareReplay(1)
+  );
 
-  constructor() {
-    this.http.get<Abastecimento[]>(this.api).subscribe({
-      next: (data) => {
-        this.todosOsRegistros = data;
-        this.aplicarFiltroPaginacao();
-      },
-      error: () => this.error.set('Erro ao carregar dados.')
-    });
-  }
+  readonly total = toSignal(
+    this.filtrados$.pipe(map(f => f.length)),
+    { initialValue: 0 }
+  );
 
-  carregar(): void {
-    this.aplicarFiltroPaginacao();
-  }
+  readonly totalPaginas = toSignal(
+    this.filtrados$.pipe(map(f => Math.max(1, Math.ceil(f.length / this.limite)))),
+    { initialValue: 1 }
+  );
 
-  private aplicarFiltroPaginacao(): void {
-    this.loading.set(true);
-    this.error.set(null);
+  readonly items = toSignal(
+    combineLatest([this.filtrados$, this.pagina$]).pipe(
+      map(([filtrados, pagina]) => {
+        const inicio = (pagina - 1) * this.limite;
+        return filtrados.slice(inicio, inicio + this.limite);
+      })
+    ),
+    { initialValue: [] }
+  );
 
-    let filtrados = [...this.todosOsRegistros];
-    const uf = this.ufSelecionada();
-    if (uf) {
-      filtrados = filtrados.filter(r => r.uf === uf);
-    }
-
-    this.total.set(filtrados.length);
-    this.totalPaginas.set(Math.max(1, Math.ceil(filtrados.length / this.limite)));
-
-    const inicio = (this.pagina() - 1) * this.limite;
-    this.items.set(filtrados.slice(inicio, inicio + this.limite));
-    this.loading.set(false);
-  }
+  readonly pagina = toSignal(this.pagina$, { initialValue: 1 });
+  readonly ufSelecionada = toSignal(this.uf$, { initialValue: '' });
 
   filtrarPorUf(uf: Uf | ''): void {
-    this.ufSelecionada.set(uf);
-    this.pagina.set(1);
-    this.aplicarFiltroPaginacao();
+    this.uf$.next(uf);
+    this.pagina$.next(1);
   }
 
   anterior(): void {
-    if (this.pagina() > 1) {
-      this.pagina.update(p => p - 1);
-      this.aplicarFiltroPaginacao();
+    if (this.pagina$.value > 1) {
+      this.pagina$.next(this.pagina$.value - 1);
     }
   }
 
   proximo(): void {
-    if (this.pagina() < this.totalPaginas()) {
-      this.pagina.update(p => p + 1);
-      this.aplicarFiltroPaginacao();
+    if (this.pagina$.value < this.totalPaginas()) {
+      this.pagina$.next(this.pagina$.value + 1);
     }
   }
 }
