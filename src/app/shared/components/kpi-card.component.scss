@@ -1,0 +1,25 @@
+.kpi {
+  background: var(--gov-white);
+  border-radius: var(--gov-radius-md);
+  padding: var(--gov-space-6);
+  border-top: 4px solid var(--gov-primary);
+  box-shadow: var(--gov-shadow-sm);
+
+  &__titulo {
+    margin: 0 0 var(--gov-space-2) 0;
+    font-family: var(--gov-font);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gov-gray-700);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  &__valor {
+    margin: 0;
+    font-family: var(--gov-font);
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--gov-black);
+  }
+}
